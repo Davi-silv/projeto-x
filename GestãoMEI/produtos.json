@@ -2,21 +2,21 @@
   {
     "nome": "Controle de Despesas",
     "descricao": "Registre e categorize todos os gastos do seu negócio de forma simples e rápida.",
-    "link": "#"
+    "link": "produto1.html"
   },
   {
     "nome": "Relatórios de Gastos",
     "descricao": "Visualize relatórios personalizados para entender onde economizar.",
-    "link": "#"
+    "link": "produto2.html"
   },
   {
     "nome": "Alertas de Gastos Excedentes",
     "descricao": "Receba notificações quando seus gastos ultrapassarem o planejado.",
-    "link": "#"
+    "link": "produto3.html"
   },
   {
     "nome": "Dicas de Economia para MEI",
     "descricao": "Conteúdo exclusivo com sugestões práticas para reduzir custos e aumentar o lucro.",
-    "link": "#"
+    "link": "produto4.html"
   }
 ] 

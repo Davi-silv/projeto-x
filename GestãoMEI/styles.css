@@ -303,3 +303,64 @@ footer .social a:hover {
     max-width: 100%;
   }
 } 
+
+/* Página de detalhe do produto */
+.produto-detalhe {
+  background: #fff;
+  padding: 60px 0 80px 0;
+  min-height: 60vh;
+}
+.produto-detalhe h1 {
+  color: #1a237e;
+  font-size: 2.2rem;
+  margin-bottom: 18px;
+}
+.produto-detalhe p {
+  font-size: 1.15rem;
+  margin-bottom: 22px;
+  color: #333;
+}
+.produto-detalhe ul {
+  margin-bottom: 30px;
+  padding-left: 20px;
+}
+.produto-detalhe li {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+.voltar-btn {
+  display: inline-block;
+  background: #1a237e;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.voltar-btn:hover {
+  background: #3949ab;
+} 
+
+/* Animação de entrada dos cards de produtos */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Mensagem de feedback do formulário */
+.form-msg {
+  margin-top: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Botão de voltar ao topo */
+#voltar-topo:hover {
+  background: #3949ab;
+} 

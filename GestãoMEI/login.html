@@ -63,17 +63,58 @@
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <h2>Login do Cliente</h2>
-    <form id="login-form">
-      <input type="email" id="login-email" placeholder="E-mail" required>
-      <input type="password" id="login-senha" placeholder="Senha" required>
-      <button type="submit">Entrar</button>
-    </form>
-    <div class="login-message" id="login-message"></div>
-    <a href="index.html" class="back-link">&larr; Voltar para a página inicial</a>
+  <div class="login-container" style="max-width: 900px; display: flex; flex-direction: row; gap: 40px; justify-content: center; align-items: flex-start;">
+    <div style="flex:1; min-width: 320px;">
+      <div class="tab-header" style="display:flex; gap:10px; margin-bottom:20px;">
+        <button id="tab-login" class="tab-btn active" style="flex:1; padding:10px; border:none; border-radius:8px 8px 0 0; background:#1a237e; color:#fff; font-weight:500; cursor:pointer;">Entrar</button>
+        <button id="tab-cadastro" class="tab-btn" style="flex:1; padding:10px; border:none; border-radius:8px 8px 0 0; background:#e8eaf6; color:#1a237e; font-weight:500; cursor:pointer;">Cadastrar</button>
+      </div>
+      <div id="login-area">
+        <h2>Login do Cliente</h2>
+        <form id="login-form">
+          <input type="email" id="login-email" placeholder="E-mail" required>
+          <input type="password" id="login-senha" placeholder="Senha" required>
+          <button type="submit">Entrar</button>
+        </form>
+        <div class="login-message" id="login-message"></div>
+      </div>
+      <div id="cadastro-area" style="display:none;">
+        <h2>Cadastro de Novo Cliente</h2>
+        <form id="cadastro-form">
+          <input type="text" id="cadastro-nome" placeholder="Nome completo" required>
+          <input type="email" id="cadastro-email" placeholder="E-mail" required>
+          <input type="password" id="cadastro-senha" placeholder="Senha" required>
+          <input type="password" id="cadastro-senha2" placeholder="Confirmar senha" required>
+          <button type="submit">Cadastrar</button>
+        </form>
+        <div class="login-message" id="cadastro-message"></div>
+      </div>
+      <a href="index.html" class="back-link" style="margin-top:20px;">&larr; Voltar para a página inicial</a>
+    </div>
+    <div style="flex:1; min-width: 320px; display:flex; align-items:center; justify-content:center;">
+      <img src="https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-de-login_114360-757.jpg?w=400" alt="Login e Cadastro" style="max-width:100%; border-radius:12px; box-shadow:0 2px 8px rgba(30,40,90,0.07);">
+    </div>
   </div>
   <script>
+    // Alternância de abas
+    const tabLogin = document.getElementById('tab-login');
+    const tabCadastro = document.getElementById('tab-cadastro');
+    const loginArea = document.getElementById('login-area');
+    const cadastroArea = document.getElementById('cadastro-area');
+    tabLogin.addEventListener('click', () => {
+      tabLogin.classList.add('active');
+      tabCadastro.classList.remove('active');
+      loginArea.style.display = '';
+      cadastroArea.style.display = 'none';
+    });
+    tabCadastro.addEventListener('click', () => {
+      tabCadastro.classList.add('active');
+      tabLogin.classList.remove('active');
+      loginArea.style.display = 'none';
+      cadastroArea.style.display = '';
+    });
+
+    // Login
     document.getElementById('login-form').addEventListener('submit', function(e) {
       e.preventDefault();
       const email = document.getElementById('login-email').value.trim();
@@ -84,14 +125,59 @@
         msg.style.color = '#d32f2f';
         return;
       }
-      // Simulação de login
-      if (email === 'cliente@exemplo.com' && senha === '123456') {
+      // Simulação de login com localStorage
+      const clientes = JSON.parse(localStorage.getItem('clientes') || '[]');
+      const cliente = clientes.find(c => c.email === email && c.senha === senha);
+      if (cliente) {
         msg.textContent = 'Login realizado com sucesso!';
         msg.style.color = '#388e3c';
       } else {
         msg.textContent = 'E-mail ou senha inválidos.';
         msg.style.color = '#d32f2f';
       }
+    });
+
+    // Cadastro
+    document.getElementById('cadastro-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nome = document.getElementById('cadastro-nome').value.trim();
+      const email = document.getElementById('cadastro-email').value.trim();
+      const senha = document.getElementById('cadastro-senha').value;
+      const senha2 = document.getElementById('cadastro-senha2').value;
+      const msg = document.getElementById('cadastro-message');
+      if (!nome || !email || !senha || !senha2) {
+        msg.textContent = 'Preencha todos os campos.';
+        msg.style.color = '#d32f2f';
+        return;
+      }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        msg.textContent = 'E-mail inválido.';
+        msg.style.color = '#d32f2f';
+        return;
+      }
+      if (senha.length < 6) {
+        msg.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+        msg.style.color = '#d32f2f';
+        return;
+      }
+      if (senha !== senha2) {
+        msg.textContent = 'As senhas não coincidem.';
+        msg.style.color = '#d32f2f';
+        return;
+      }
+      // Verifica se já existe
+      const clientes = JSON.parse(localStorage.getItem('clientes') || '[]');
+      if (clientes.some(c => c.email === email)) {
+        msg.textContent = 'Já existe um cadastro com este e-mail.';
+        msg.style.color = '#d32f2f';
+        return;
+      }
+      clientes.push({ nome, email, senha });
+      localStorage.setItem('clientes', JSON.stringify(clientes));
+      msg.textContent = 'Cadastro realizado com sucesso! Agora você pode fazer login.';
+      msg.style.color = '#388e3c';
+      this.reset();
+      setTimeout(() => { msg.textContent = ''; }, 4000);
     });
   </script>
 </body>
