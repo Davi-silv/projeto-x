@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - FinanGestor</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .login-container {
+      max-width: 400px;
+      margin: 80px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(30,40,90,0.07);
+      padding: 40px 30px 30px 30px;
+      text-align: center;
+    }
+    .login-container h2 {
+      color: #1a237e;
+      margin-bottom: 25px;
+    }
+    .login-container form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .login-container input[type="email"],
+    .login-container input[type="password"] {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .login-container button {
+      background: #1a237e;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .login-container button:hover {
+      background: #3949ab;
+    }
+    .login-container .login-message {
+      min-height: 22px;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+    .login-container .back-link {
+      display: block;
+      margin-top: 18px;
+      color: #3949ab;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .login-container .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login do Cliente</h2>
+    <form id="login-form">
+      <input type="email" id="login-email" placeholder="E-mail" required>
+      <input type="password" id="login-senha" placeholder="Senha" required>
+      <button type="submit">Entrar</button>
+    </form>
+    <div class="login-message" id="login-message"></div>
+    <a href="index.html" class="back-link">&larr; Voltar para a página inicial</a>
+  </div>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const senha = document.getElementById('login-senha').value.trim();
+      const msg = document.getElementById('login-message');
+      if (email === '' || senha === '') {
+        msg.textContent = 'Preencha todos os campos.';
+        msg.style.color = '#d32f2f';
+        return;
+      }
+      // Simulação de login
+      if (email === 'cliente@exemplo.com' && senha === '123456') {
+        msg.textContent = 'Login realizado com sucesso!';
+        msg.style.color = '#388e3c';
+      } else {
+        msg.textContent = 'E-mail ou senha inválidos.';
+        msg.style.color = '#d32f2f';
+      }
+    });
+  </script>
+</body>
+</html> 
