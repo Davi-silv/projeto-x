@@ -115,7 +115,7 @@
     });
 
     // Login
-    document.getElementById('login-form').addEventListener('submit', function(e) {
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const email = document.getElementById('login-email').value.trim();
       const senha = document.getElementById('login-senha').value.trim();
@@ -125,14 +125,24 @@
         msg.style.color = '#d32f2f';
         return;
       }
-      // Simulação de login com localStorage
-      const clientes = JSON.parse(localStorage.getItem('clientes') || '[]');
-      const cliente = clientes.find(c => c.email === email && c.senha === senha);
-      if (cliente) {
-        msg.textContent = 'Login realizado com sucesso!';
-        msg.style.color = '#388e3c';
-      } else {
-        msg.textContent = 'E-mail ou senha inválidos.';
+      // Login via backend (usuário: admin, senha: 123456)
+      try {
+        const response = await fetch('http://localhost:3001/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: email, password: senha })
+        });
+        const data = await response.json();
+        if (response.ok && data.token) {
+          localStorage.setItem('gestaomei_token', data.token);
+          msg.textContent = 'Login realizado com sucesso!';
+          msg.style.color = '#388e3c';
+        } else {
+          msg.textContent = data.erro || 'E-mail ou senha inválidos.';
+          msg.style.color = '#d32f2f';
+        }
+      } catch (err) {
+        msg.textContent = 'Erro ao conectar com o servidor.';
         msg.style.color = '#d32f2f';
       }
     });

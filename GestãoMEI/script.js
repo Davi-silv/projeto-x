@@ -32,31 +32,48 @@ if (newsletterForm) {
 } 
 
 // Produtos Financeiros (cards dinâmicos)
-fetch('produtos.json')
-  .then(response => response.json())
-  .then(produtos => {
-    const lista = document.getElementById('produtos-lista');
-    const filtro = document.getElementById('filtro-produtos');
-    function renderProdutos(filtrar = '') {
-      const filtrados = produtos.filter(produto =>
-        produto.nome.toLowerCase().includes(filtrar.toLowerCase()) ||
-        produto.descricao.toLowerCase().includes(filtrar.toLowerCase())
-      );
-      lista.innerHTML = filtrados.map((produto, i) => `
-        <div class="produto-card fade-in" style="animation-delay:${i * 80}ms">
-          <h3>${produto.nome}</h3>
-          <p>${produto.descricao}</p>
-          <a href="${produto.link}" class="saiba-mais-btn" target="_blank">Saiba mais</a>
-        </div>
-      `).join('');
+const token = localStorage.getItem('gestaomei_token');
+if (token) {
+  fetch('http://localhost:3001/produtos', {
+    headers: {
+      'Authorization': 'Bearer ' + token
     }
-    if (lista) renderProdutos();
-    if (filtro) {
-      filtro.addEventListener('input', e => {
-        renderProdutos(e.target.value);
-      });
-    }
-  }); 
+  })
+    .then(response => {
+      if (!response.ok) throw new Error('Não autorizado');
+      return response.json();
+    })
+    .then(produtos => {
+      const lista = document.getElementById('produtos-lista');
+      const filtro = document.getElementById('filtro-produtos');
+      function renderProdutos(filtrar = '') {
+        const filtrados = produtos.filter(produto =>
+          produto.nome.toLowerCase().includes(filtrar.toLowerCase()) ||
+          produto.descricao.toLowerCase().includes(filtrar.toLowerCase())
+        );
+        lista.innerHTML = filtrados.map((produto, i) => `
+          <div class="produto-card fade-in" style="animation-delay:${i * 80}ms">
+            <h3>${produto.nome}</h3>
+            <p>${produto.descricao}</p>
+            <a href="${produto.link}" class="saiba-mais-btn" target="_blank">Saiba mais</a>
+          </div>
+        `).join('');
+      }
+      if (lista) renderProdutos();
+      if (filtro) {
+        filtro.addEventListener('input', e => {
+          renderProdutos(e.target.value);
+        });
+      }
+    })
+    .catch(err => {
+      const lista = document.getElementById('produtos-lista');
+      if (lista) lista.innerHTML = '<div style="color:#d32f2f;">Acesso não autorizado. Faça login para ver os produtos.</div>';
+    });
+} else {
+  const lista = document.getElementById('produtos-lista');
+  if (lista) lista.innerHTML = '<div style="color:#d32f2f;">Faça login para ver os produtos.</div>';
+}
 
 // Animação de entrada para os cards de produtos e seções
 const observer = new IntersectionObserver(entries => {
